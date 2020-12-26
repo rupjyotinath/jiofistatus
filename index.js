@@ -37,39 +37,46 @@ function showJiofiStatus(){
             setTimeout(showJiofiStatus,10000);
         }
         else if(response.statusCode==200){
-            //console.log(html); Whole html page source
-            const $ = cheerio.load(html);
+            try{
+                //console.log(html); Whole html page source
+                const $ = cheerio.load(html);
 
-            // Get the noOfClient value
-            const noOfClient = $('#noOfClient').attr().value;
-            console.log(chalk.bgCyanBright.black("DEVICES CONNECTED: "+noOfClient+" "));
+                // Get the noOfClient value
+                const noOfClient = $('#noOfClient').attr().value;
+                console.log(chalk.bgCyanBright.black("DEVICES CONNECTED: "+noOfClient+" "));
 
-            //Get the batterystatus value
-            const batteryStatus = $('#batterystatus').attr().value; //A string type "charging or discharging"
+                //Get the batterystatus value
+                const batteryStatus = $('#batterystatus').attr().value; //A string type "charging or discharging"
 
-            if(batteryStatus=='Charging' || batteryStatus=='Fully Charged'){
-                console.log("STATUS:"+chalk.bold.greenBright(batteryStatus)); 
+                if(batteryStatus=='Charging' || batteryStatus=='Fully Charged'){
+                    console.log("STATUS:"+chalk.bold.greenBright(batteryStatus)); 
+                }
+                else{
+                    console.log("STATUS:"+chalk.bold.yellowBright(batteryStatus)); 
+                }
+
+                //Get the batterylevel value
+                const batteryLevel = $('#batterylevel').attr().value; // Strings like 10%, 20%
+
+                //Store Integer version of the battery level
+                const batteryLevelInt = parseInt(batteryLevel,10);
+
+                if(batteryLevelInt>=50){
+                    console.log(chalk.bold.greenBright(figlet.textSync(batteryLevel,{horizontalLayout:'full'})));
+                }
+                else if(batteryLevelInt>=20){
+                    console.log(chalk.bold.blueBright(figlet.textSync(batteryLevel,{horizontalLayout:'full'})));
+                }
+                else{
+                    console.log(chalk.bold.red(figlet.textSync(batteryLevel,{horizontalLayout:'full'})));
+                }
+                setTimeout(showJiofiStatus,60000);
+                }
+            catch(err){
+                console.log(chalk.red(err.message));
+                // Retry
+                setTimeout(showJiofiStatus,10000);
             }
-            else{
-                console.log("STATUS:"+chalk.bold.yellowBright(batteryStatus)); 
-            }
-
-            //Get the batterylevel value
-            const batteryLevel = $('#batterylevel').attr().value; // Strings like 10%, 20%
-
-            //Store Integer version of the battery level
-            const batteryLevelInt = parseInt(batteryLevel,10);
-
-            if(batteryLevelInt>=50){
-                console.log(chalk.bold.greenBright(figlet.textSync(batteryLevel,{horizontalLayout:'full'})));
-            }
-            else if(batteryLevelInt>=20){
-                console.log(chalk.bold.blueBright(figlet.textSync(batteryLevel,{horizontalLayout:'full'})));
-            }
-            else{
-                console.log(chalk.bold.red(figlet.textSync(batteryLevel,{horizontalLayout:'full'})));
-            }
-            setTimeout(showJiofiStatus,60000);
         }
         else{
             console.log(chalk.red('Unable to reach http://jiofi.local.html, should receive 200 status'));
