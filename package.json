@@ -1,6 +1,6 @@
 {
   "name": "jiofistatus",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Node.js console app to display JioFi 4 router's battery level, charging & total devices connected info, updated continuously",
   "main": "index.js",
   "repository": {
