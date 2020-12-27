@@ -28,6 +28,8 @@ jiofistatus
 ```
 Will display the name & version before showing the status as shown in screenshot above.
 
+**Windows users can automate the start of the application on windows startup by using the bat file included in "windows" directory.** Follow the "Run batch files on startup" (last part) of [this article](https://www.windowscentral.com/how-create-and-run-batch-file-windows-10).
+
 ## For Development
 
 clone or fork the repository.
